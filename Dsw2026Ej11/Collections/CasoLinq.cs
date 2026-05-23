@@ -1,19 +1,68 @@
-﻿namespace Dsw2026Ej11.Collections;
+﻿using Dsw2026Ej11.Domain;
+
+namespace Dsw2026Ej11.Collections;
 
 /*
  * Para cada punto crear un método que permita:
- * 1. Obtener el primer libro (GetPrimero)
- * 2. Obtener el último libro (GetUltimo)
- * 3. Obtener la suma de precios (GetTotalPrecios)
- * 4. Obtener el promedio de precios (GetPromedioPrecios)
- * 5. Obtener la lista de libros con Id mayor a 15 (GetListById)
- * 6. Obtener una lista de cada libro con su título y precio en formato moneda (GetLibros) (debe retornar una lista de string)
- * 7. Obtener el libro con el precio más alto (GetMayorPrecio)
- * 8. Obtener el libro con el precio más bajo (GetMenorPrecio)
- * 9. Obtener los libros cuyo precio sea mayor al promedio (GetMayorPromedio)
- * 10. Obtener los libros ordenados por título de forma descendente
+ * 1. Obtener el primer libro (GetPrimero) ✅
+ * 2. Obtener el último libro (GetUltimo) ✅
+ * 3. Obtener la suma de precios (GetTotalPrecios) ✅
+ * 4. Obtener el promedio de precios (GetPromedioPrecios) ✅
+ * 5. Obtener la lista de libros con Id mayor a 15 (GetListById) ✅
+ * 6. Obtener una lista de cada libro con su título y precio en formato moneda (GetLibros) (debe retornar una lista de string) ✅
+ * 7. Obtener el libro con el precio más alto (GetMayorPrecio) ✅
+ * 8. Obtener el libro con el precio más bajo (GetMenorPrecio) ✅
+ * 9. Obtener los libros cuyo precio sea mayor al promedio (GetMayorPromedio) ✅
+ * 10. Obtener los libros ordenados por título de forma descendente ✅
  * En todos los casos debe aplicarse LINQ
  */
 public class CasoLinq
 {
+    public Libro? GetPrimero()
+    {
+        /*return (from l in Libro.CrearLista()
+                        where l.Id == 1
+                        select l).FirstOrDefault();*/
+
+        //return Libro.CrearLista().FirstOrDefault(l => l.Id == 1); 
+        return Libro.CrearLista().FirstOrDefault();
+    }
+    public Libro? GetUltimo()
+    {
+        return Libro.CrearLista().LastOrDefault();
+    }
+    public decimal GetTotalPrecios()
+    {
+        //return (from l in Libro.CrearLista() select l.Precio).Sum();
+        return Libro.CrearLista().Sum(l => l.Precio);
+    }
+    public decimal GetPromedioPrecios()
+    {
+        return Libro.CrearLista().Average(l => l.Precio);
+    }
+    public IEnumerable<Libro> GetListById()
+    {
+        return from l in Libro.CrearLista() where l.Id > 15 select l;
+    }
+    public List<string> GetLibros()
+    {
+        return (from l in Libro.CrearLista() select $"{l.Id} - {l.Titulo} - Precio: {l.Precio:C}").ToList();
+    }
+    public Libro? GetMayorPrecio()
+    {
+        return Libro.CrearLista().OrderByDescending(l => l.Precio).FirstOrDefault();
+    }
+    public Libro? GetMenorPrecio()
+    {
+        return Libro.CrearLista().OrderBy(l => l.Precio).FirstOrDefault();
+    }
+    public IEnumerable<Libro> GetMayorPromedio()
+    {
+        var promedio = Libro.CrearLista().Average(l => l.Precio);
+        return Libro.CrearLista().Where(l => l.Precio > promedio);
+    }
+    public IEnumerable<Libro> GetLibrosOrdenadosxNombre()
+    {
+        return Libro.CrearLista().OrderByDescending(l => l.Titulo);
+    }
 }
